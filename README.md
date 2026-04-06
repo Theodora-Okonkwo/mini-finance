@@ -1,4 +1,3 @@
-```markdown
 # 🏦 Mini Finance — Azure Deployment
 
 > A static web application deployed on Microsoft Azure using **Terraform** for infrastructure provisioning and **Ansible** for configuration management and deployment.
@@ -11,7 +10,7 @@
 - [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
 - [Prerequisites](#prerequisites)
-- [Secrets & Sensitive Files](#secrets--sensitive-files)
+- [Secrets and Sensitive Files](#secrets-and-sensitive-files)
 - [Usage](#usage)
 - [Clean Up](#clean-up)
 
@@ -30,7 +29,7 @@
 | Tool | Purpose |
 |---|---|
 | Terraform | Infrastructure provisioning |
-| Ansible | Configuration management & deployment |
+| Ansible | Configuration management and deployment |
 | Microsoft Azure | Cloud provider |
 | Ubuntu 22.04 LTS | VM operating system |
 | Nginx | Web server |
@@ -39,20 +38,18 @@
 
 ## 📁 Project Structure
 
-```
-mini-finance/
-├─ terraform/
-│  ├─ providers.tf        # AzureRM provider + version lock
-│  ├─ variables.tf        # Input variable declarations
-│  ├─ terraform.tfvars    # Your values — DO NOT COMMIT
-│  ├─ main.tf             # All Azure resources
-│  └─ outputs.tf          # Public IP, SSH command, site URL
-├─ ansible/
-│  ├─ inventory.ini       # Target hosts + SSH config — DO NOT COMMIT
-│  └─ site.yml            # Multi-play: install → deploy → verify
-├─ .gitignore
-└─ README.md
-```
+    mini-finance/
+    ├─ terraform/
+    │  ├─ providers.tf        # AzureRM provider and version lock
+    │  ├─ variables.tf        # Input variable declarations
+    │  ├─ terraform.tfvars    # Your values — DO NOT COMMIT
+    │  ├─ main.tf             # All Azure resources
+    │  └─ outputs.tf          # Public IP, SSH command, site URL
+    ├─ ansible/
+    │  ├─ inventory.ini       # Target hosts and SSH config — DO NOT COMMIT
+    │  └─ site.yml            # Multi-play: install, deploy, verify
+    ├─ .gitignore
+    └─ README.md
 
 ---
 
@@ -65,9 +62,9 @@ mini-finance/
 
 ---
 
-## 🔒 Secrets & Sensitive Files
+## 🔒 Secrets and Sensitive Files
 
-The following files are listed in `.gitignore` and must **never** be committed:
+The following files are in `.gitignore` and must **never** be committed:
 
 | File | Why |
 |---|---|
@@ -78,27 +75,23 @@ The following files are listed in `.gitignore` and must **never** be committed:
 
 To use this repo on a new machine, create these files locally.
 
-### `terraform/terraform.tfvars`
+**terraform/terraform.tfvars**
 
-```hcl
-location            = "your-azure-region"
-resource_group_name = "your-resource-group-name"
-vm_admin_username   = "your-admin-username"
-ssh_public_key_path = "~/.ssh/your-rsa-key.pub"
-vm_size             = "Standard_B2ms"
-```
+    location            = "your-azure-region"
+    resource_group_name = "your-resource-group-name"
+    vm_admin_username   = "your-admin-username"
+    ssh_public_key_path = "~/.ssh/your-rsa-key.pub"
+    vm_size             = "Standard_B2ms"
 
-### `ansible/inventory.ini`
+**ansible/inventory.ini**
 
-```ini
-[web]
-<YOUR_PUBLIC_IP>
+    [web]
+    <YOUR_PUBLIC_IP>
 
-[web:vars]
-ansible_user=your-admin-username
-ansible_ssh_private_key_file=~/.ssh/your-rsa-key
-ansible_ssh_common_args='-o StrictHostKeyChecking=no'
-```
+    [web:vars]
+    ansible_user=your-admin-username
+    ansible_ssh_private_key_file=~/.ssh/your-rsa-key
+    ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 
 ---
 
@@ -106,18 +99,14 @@ ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 
 ### 1. Provision infrastructure
 
-```bash
-cd terraform/
-terraform init
-terraform plan
-terraform apply
-```
+    cd terraform/
+    terraform init
+    terraform plan
+    terraform apply
 
 ### 2. Get the public IP
 
-```bash
-terraform output public_ip
-```
+    terraform output public_ip
 
 ### 3. Update inventory
 
@@ -125,23 +114,17 @@ Add the public IP output to `ansible/inventory.ini`
 
 ### 4. Test SSH connectivity
 
-```bash
-ssh -i ~/.ssh/your-rsa-key azureuser@<PUBLIC_IP> "hostname"
-```
+    ssh -i ~/.ssh/your-rsa-key azureuser@<PUBLIC_IP> "hostname"
 
 ### 5. Run Ansible
 
-```bash
-cd ../ansible/
-ansible -i inventory.ini web -m ping
-ansible-playbook -i inventory.ini site.yml
-```
+    cd ../ansible/
+    ansible -i inventory.ini web -m ping
+    ansible-playbook -i inventory.ini site.yml
 
 ### 6. Open in browser
 
-```
-http://<PUBLIC_IP>
-```
+    http://<PUBLIC_IP>
 
 ---
 
@@ -149,14 +132,11 @@ http://<PUBLIC_IP>
 
 Destroy all resources when done to avoid Azure charges:
 
-```bash
-cd terraform/
-terraform destroy
-```
+    cd terraform/
+    terraform destroy
 
 ---
 
 ## 📦 Application Source
 
 Mini Finance static site — [pravinmishraaws/mini_finance](https://github.com/pravinmishraaws/mini_finance)
-```
