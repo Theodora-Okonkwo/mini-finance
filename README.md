@@ -1,11 +1,23 @@
-```
-# Mini Finance — Azure Deployment
+```markdown
+# 🏦 Mini Finance — Azure Deployment
 
-A static web application deployed on Microsoft Azure using Terraform for infrastructure provisioning and Ansible for configuration management and deployment.
+> A static web application deployed on Microsoft Azure using **Terraform** for infrastructure provisioning and **Ansible** for configuration management and deployment.
 
 ---
 
-## What This Project Does
+## 📋 Table of Contents
+
+- [What This Project Does](#what-this-project-does)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Prerequisites](#prerequisites)
+- [Secrets & Sensitive Files](#secrets--sensitive-files)
+- [Usage](#usage)
+- [Clean Up](#clean-up)
+
+---
+
+## 🚀 What This Project Does
 
 - Provisions Azure infrastructure (Resource Group, VNet, Subnet, NSG, Public IP, Ubuntu VM) using Terraform
 - Configures the VM and deploys the Mini Finance static site using Ansible
@@ -13,7 +25,19 @@ A static web application deployed on Microsoft Azure using Terraform for infrast
 
 ---
 
-## Project Structure
+## 🛠 Tech Stack
+
+| Tool | Purpose |
+|---|---|
+| Terraform | Infrastructure provisioning |
+| Ansible | Configuration management & deployment |
+| Microsoft Azure | Cloud provider |
+| Ubuntu 22.04 LTS | VM operating system |
+| Nginx | Web server |
+
+---
+
+## 📁 Project Structure
 
 ```
 mini-finance/
@@ -32,7 +56,7 @@ mini-finance/
 
 ---
 
-## Prerequisites
+## ✅ Prerequisites
 
 - Azure CLI — logged in via `az login`
 - Terraform >= 1.3.0
@@ -41,9 +65,9 @@ mini-finance/
 
 ---
 
-## Secrets & Sensitive Files
+## 🔒 Secrets & Sensitive Files
 
-The following files are listed in `.gitignore` and must never be committed:
+The following files are listed in `.gitignore` and must **never** be committed:
 
 | File | Why |
 |---|---|
@@ -52,11 +76,11 @@ The following files are listed in `.gitignore` and must never be committed:
 | `terraform/terraform.tfstate` | Contains full infrastructure state including sensitive values |
 | `terraform/.terraform/` | Provider plugins — not needed in version control |
 
-To use this repo on a new machine, create these files locally from the examples below.
+To use this repo on a new machine, create these files locally.
 
-### terraform/terraform.tfvars — create this manually
+### `terraform/terraform.tfvars`
 
-```
+```hcl
 location            = "your-azure-region"
 resource_group_name = "your-resource-group-name"
 vm_admin_username   = "your-admin-username"
@@ -64,9 +88,9 @@ ssh_public_key_path = "~/.ssh/your-rsa-key.pub"
 vm_size             = "Standard_B2ms"
 ```
 
-### ansible/inventory.ini — create this manually after terraform apply
+### `ansible/inventory.ini`
 
-```
+```ini
 [web]
 <YOUR_PUBLIC_IP>
 
@@ -78,11 +102,11 @@ ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 
 ---
 
-## Usage
+## 🚦 Usage
 
 ### 1. Provision infrastructure
 
-```
+```bash
 cd terraform/
 terraform init
 terraform plan
@@ -91,23 +115,23 @@ terraform apply
 
 ### 2. Get the public IP
 
-```
+```bash
 terraform output public_ip
 ```
 
 ### 3. Update inventory
 
-Add the public IP to ansible/inventory.ini
+Add the public IP output to `ansible/inventory.ini`
 
 ### 4. Test SSH connectivity
 
-```
+```bash
 ssh -i ~/.ssh/your-rsa-key azureuser@<PUBLIC_IP> "hostname"
 ```
 
 ### 5. Run Ansible
 
-```
+```bash
 cd ../ansible/
 ansible -i inventory.ini web -m ping
 ansible-playbook -i inventory.ini site.yml
@@ -121,18 +145,18 @@ http://<PUBLIC_IP>
 
 ---
 
-## Clean Up
+## 🗑 Clean Up
 
 Destroy all resources when done to avoid Azure charges:
 
-```
+```bash
 cd terraform/
 terraform destroy
 ```
 
 ---
 
-## Application
+## 📦 Application Source
 
-Mini Finance static site — source: https://github.com/pravinmishraaws/mini_finance
+Mini Finance static site — [pravinmishraaws/mini_finance](https://github.com/pravinmishraaws/mini_finance)
 ```
